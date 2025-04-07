@@ -1,25 +1,9 @@
-# 🧠 AI Safety Incident Log API
+# ai-incident-log-api
 
 This is a RESTful API built using **Node.js**, **Express**, and **MongoDB** to log and manage AI-related safety incidents. It's intended for learning and prototyping.
 
----
 
-## 📋 Table of Contents
-
-- [Step 1: Environment Setup](#step-1-environment-setup)
-- [Step 2: Create Project Directory](#step-2-create-project-directory)
-- [Step 3: Install Required Packages](#step-3-install-required-packages)
-- [Step 4: Project Structure](#step-4-project-structure)
-- [Step 5: Setup Environment Variables](#step-5-setup-environment-variables)
-- [Step 6: Create the Incident Model](#step-6-create-the-incident-model)
-- [Step 7: Define the API Routes](#step-7-define-the-api-routes)
-- [Step 8: Main Server File](#step-8-main-server-file)
-- [Step 9: Run Your Project](#step-9-run-your-project)
-- [Step 10: Test API Using Postman or curl](#step-10-test-api-using-postman-or-curl)
-
----
-
-## 🛠️ Step 1: Environment Setup
+## Step 1: Environment Setup
 
 ### Prerequisites
 
@@ -27,9 +11,8 @@ This is a RESTful API built using **Node.js**, **Express**, and **MongoDB** to l
 - [MongoDB](https://www.mongodb.com/try/download/community) installed locally or via cloud (MongoDB Atlas)
 - `curl` or [Postman](https://www.postman.com/) for testing
 
----
 
-## 📁 Step 2: Create Project Directory
+## Step 2: Create Project Directory
 
 ```bash
 mkdir ai-incident-log-api
@@ -37,18 +20,14 @@ cd ai-incident-log-api
 npm init -y
 ```
 
----
-
-## 📦 Step 3: Install Required Packages
+## Step 3: Install Required Packages
 
 ```bash
 npm install express mongoose dotenv
 npm install --save-dev nodemon
 ```
 
----
-
-## 📂 Step 4: Project Structure
+## Step 4: Project Structure
 
 ```
 ai-incident-log-api/
@@ -65,9 +44,7 @@ ai-incident-log-api/
 └── README.md
 ```
 
----
-
-## 🔐 Step 5: Setup Environment Variables
+## Step 5: Setup Environment Variables
 
 Create a `.env` file in the root:
 
@@ -76,11 +53,9 @@ PORT=3000
 MONGODB_URI=mongodb://localhost:27017/incident-log
 ```
 
----
+## Step 6: Create the Incident Model
 
-## 🧾 Step 6: Create the Incident Model
-
-📄 `models/Incident.js`:
+ `models/Incident.js`:
 
 ```js
 const mongoose = require('mongoose');
@@ -99,11 +74,9 @@ const incidentSchema = new mongoose.Schema({
 module.exports = mongoose.model('Incident', incidentSchema);
 ```
 
----
+## Step 7: Define the API Routes
 
-## 🌐 Step 7: Define the API Routes
-
-📄 `routes/incidents.js`:
+ `routes/incidents.js`:
 
 ```js
 const express = require('express');
@@ -153,11 +126,9 @@ router.delete('/:id', async (req, res) => {
 module.exports = router;
 ```
 
----
+## Step 8: Main Server File
 
-## 🧩 Step 8: Main Server File
-
-📄 `app.js`:
+ `app.js`:
 
 ```js
 require('dotenv').config();
@@ -177,19 +148,18 @@ app.use('/incidents', incidentsRouter);
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
     app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`);
+      console.log(` Server running at http://localhost:${PORT}`);
     });
   })
   .catch(err => {
-    console.error('❌ MongoDB Error:', err);
+    console.error(' MongoDB Error:', err);
   });
 ```
 
----
 
-## 🏃‍♂️ Step 9: Run Your Project
+## Step 9: Run Your Project
 
 Start MongoDB in a separate terminal if needed:
 
@@ -206,11 +176,10 @@ npx nodemon app.js
 ```
 ![Screenshot 2025-04-07 095101](https://github.com/user-attachments/assets/4ef7150e-ef21-4c3d-83c6-311537a91277)
 
----
 
-## 🧪 Step 10: Test API Using Postman or curl
+## Step 10: Test API Using Postman or curl
 
-### ✅ POST `/incidents`
+### POST `/incidents`
 
 ```bash
 curl -X POST http://localhost:3000/incidents \
@@ -222,7 +191,7 @@ curl -X POST http://localhost:3000/incidents \
 }'
 ```
 
-### ✅ GET `/incidents`
+### GET `/incidents`
 
 ```bash
 curl http://localhost:3000/incidents
@@ -230,7 +199,7 @@ curl http://localhost:3000/incidents
 ![Screenshot 2025-04-06 214313](https://github.com/user-attachments/assets/2b7e53d5-441e-4c02-b895-c11554ee7ae8)
 
 
-### ✅ GET `/incidents/:id`
+### GET `/incidents/:id`
 
 ```bash
 curl http://localhost:3000/incidents/YOUR_INCIDENT_ID_HERE
@@ -238,17 +207,15 @@ curl http://localhost:3000/incidents/YOUR_INCIDENT_ID_HERE
 ![Screenshot 2025-04-06 214328](https://github.com/user-attachments/assets/04d5473f-abcb-4111-95ef-f83013327565)
 
 
-### ✅ DELETE `/incidents/:id`
+### DELETE `/incidents/:id`
 
 ```bash
 curl -X DELETE http://localhost:3000/incidents/YOUR_INCIDENT_ID_HERE
 ```
 ![Screenshot 2025-04-06 215116](https://github.com/user-attachments/assets/4c6bc204-2113-44cb-b9c2-1f855f8e6225)
 
----
 
-
-## 👤 Author
+## Author
 
 **Abhay Kumar Shukla**  
 GitHub: [AbhayShukla1907](https://github.com/AbhayShukla1907)
