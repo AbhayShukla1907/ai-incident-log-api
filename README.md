@@ -1,15 +1,28 @@
 # ai-incident-log-api
 
-This is a RESTful API built using **Node.js**, **Express**, and **MongoDB** to log and manage AI-related safety incidents. It's intended for learning and prototyping.
+For this backend assignment, I built a simple RESTful API using Node.js, Express, and MongoDB to log and manage AI safety-related incidents. The main goal was to create a system where incidents like model bias or unsafe behavior could be reported, retrieved, and deleted.
 
+The API has the following core functionalities:
+
+POST /incidents: Add a new incident (with title, description, severity).
+
+GET /incidents: Retrieve all incidents.
+
+GET /incidents/:id: Fetch a specific incident by its ID.
+
+DELETE /incidents/:id: Delete an incident by ID.
+
+I structured the project cleanly with routes, models, and environment configuration, and made sure it was easy to test using tools like curl or Postman. I’ve also added a detailed README.md that includes setup instructions, environment config, and sample commands to run/test the app locally.
 
 ## Step 1: Environment Setup
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- [MongoDB](https://www.mongodb.com/try/download/community) installed locally or via cloud (MongoDB Atlas)
-- `curl` or [Postman](https://www.postman.com/) for testing
+ [Node.js](https://nodejs.org/) (v14 or higher)
+ 
+ [MongoDB](https://www.mongodb.com/try/download/community) installed locally or via cloud (MongoDB Atlas)
+ 
+ `curl` or [Postman](https://www.postman.com/) for testing
 
 
 ## Step 2: Create Project Directory
@@ -55,109 +68,34 @@ MONGODB_URI=mongodb://localhost:27017/incident-log
 
 ## Step 6: Create the Incident Model
 
- `models/Incident.js`:
+ The model is defined in models/Incident.js. It includes fields like:
 
-```js
-const mongoose = require('mongoose');
+title
 
-const incidentSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  severity: {
-    type: String,
-    enum: ['Low', 'Medium', 'High'],
-    required: true
-  },
-  reported_at: { type: Date, default: Date.now }
-});
+description
 
-module.exports = mongoose.model('Incident', incidentSchema);
-```
+severity (Low, Medium, High)
+
+reported_at (auto-generated timestamp)
+
+
 
 ## Step 7: Define the API Routes
 
- `routes/incidents.js`:
+All logic to handle requests is in routes/incidents.js, including:
 
-```js
-const express = require('express');
-const router = express.Router();
-const Incident = require('../models/Incident');
+GET /incidents
 
-// GET all incidents
-router.get('/', async (req, res) => {
-  const incidents = await Incident.find();
-  res.json(incidents);
-});
+POST /incidents
 
-// POST new incident
-router.post('/', async (req, res) => {
-  const { title, description, severity } = req.body;
-  if (!title || !description || !['Low', 'Medium', 'High'].includes(severity)) {
-    return res.status(400).json({ error: 'Invalid input' });
-  }
+GET /incidents/:id
 
-  const incident = new Incident({ title, description, severity });
-  await incident.save();
-  res.status(201).json(incident);
-});
+DELETE /incidents/:id
 
-// GET by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const incident = await Incident.findById(req.params.id);
-    if (!incident) return res.status(404).json({ error: 'Not found' });
-    res.json(incident);
-  } catch {
-    res.status(404).json({ error: 'Invalid ID format or not found' });
-  }
-});
-
-// DELETE by ID
-router.delete('/:id', async (req, res) => {
-  try {
-    const deleted = await Incident.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: 'Not found' });
-    res.status(204).end();
-  } catch {
-    res.status(404).json({ error: 'Invalid ID format or not found' });
-  }
-});
-
-module.exports = router;
-```
 
 ## Step 8: Main Server File
 
  `app.js`:
-
-```js
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const incidentsRouter = require('./routes/incidents');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(express.json());
-
-// Routes
-app.use('/incidents', incidentsRouter);
-
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log(' Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(` Server running at http://localhost:${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error(' MongoDB Error:', err);
-  });
-```
-
 
 ## Step 9: Run Your Project
 
